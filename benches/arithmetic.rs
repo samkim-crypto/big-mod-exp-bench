@@ -17,6 +17,78 @@ fn run_test_case(test_case: &str) {
     base.modpow(&exponent, &modulus);
 }
 
+fn test_16_rsa(c: &mut Criterion) {
+    let test_case = r#"
+        {
+            "base":     "FC83",
+            "exponent": "E4B3",
+            "modulus":  "CFDD"
+        }
+    "#;
+
+    c.bench_function("16 bits rsa", |b| b.iter(|| run_test_case(test_case)));
+}
+
+fn test_16_pow2(c: &mut Criterion) {
+    let test_case = r#"
+         {
+            "base":     "FC83",
+            "exponent": "E4B3",
+            "modulus":  "1000"
+         }
+     "#;
+
+    c.bench_function("16 pow two", |b| b.iter(|| run_test_case(test_case)));
+}
+
+fn test_32_rsa(c: &mut Criterion) {
+    let test_case = r#"
+        {
+            "base":     "C1157599",
+            "exponent": "B582C905",
+            "modulus":  "D8BEA141"
+        }
+    "#;
+
+    c.bench_function("32 bits rsa", |b| b.iter(|| run_test_case(test_case)));
+}
+
+fn test_32_pow2(c: &mut Criterion) {
+    let test_case = r#"
+         {
+            "base":     "C1157599",
+            "exponent": "B582C905",
+            "modulus":  "10000000"
+         }
+     "#;
+
+    c.bench_function("32 pow two", |b| b.iter(|| run_test_case(test_case)));
+}
+
+fn test_64_rsa(c: &mut Criterion) {
+    let test_case = r#"
+        {
+            "base":     "DBBD676B1D8ECD45",
+            "exponent": "EEF948E552EB6285",
+            "modulus":  "EA68D469703323A9"
+        }
+    "#;
+
+    c.bench_function("64 bits rsa", |b| b.iter(|| run_test_case(test_case)));
+}
+
+fn test_64_pow2(c: &mut Criterion) {
+    let test_case = r#"
+         {
+            "base":     "DBBD676B1D8ECD45",
+            "exponent": "EEF948E552EB6285",
+            "modulus":  "1000000000000000"
+         }
+     "#;
+
+    c.bench_function("64 pow two", |b| b.iter(|| run_test_case(test_case)));
+}
+
 fn test_128_rsa(c: &mut Criterion) {
     let test_case = r#"
         {
@@ -91,6 +163,12 @@ fn test_512_pow2(c: &mut Criterion) {
 
 criterion_group!(
     benches,
+    test_16_rsa,
+    test_16_pow2,
+    test_32_rsa,
+    test_32_pow2,
+    test_64_rsa,
+    test_64_pow2,
     test_128_rsa,
     test_128_pow2,
     test_256_rsa,
