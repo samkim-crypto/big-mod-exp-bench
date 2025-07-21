@@ -28,7 +28,8 @@ fn run_all_benches(c: &mut Criterion) {
 
         group.bench_function("rug", |b| {
             b.iter(|| {
-                let result = rug_base.pow_mod_ref(&rug_exp, &rug_mod).unwrap();
+                let power = rug_base.pow_mod_ref(&rug_exp, &rug_mod).unwrap();
+                let result = Integer::from(power);
                 black_box(result);
             })
         });
@@ -39,10 +40,10 @@ fn run_all_benches(c: &mut Criterion) {
         let ibig_mod = UBig::from_str_radix(&hex_str, 16).unwrap();
 
         let ring = ModuloRing::new(&ibig_mod);
+        let m_base = ring.from(&ibig_base);
 
         group.bench_function("ibig", |b| {
             b.iter(|| {
-                let m_base = ring.from(&ibig_base);
                 let result = m_base.pow(&ibig_exp);
                 black_box(result);
             })
@@ -70,7 +71,7 @@ fn run_all_benches(c: &mut Criterion) {
 
         group.bench_function("dashu", |b| {
             b.iter(|| {
-                let result = base.pow(&dashu_exp).residue();
+                let result = base.pow(black_box(&dashu_exp)).residue();
                 black_box(result);
             })
         });
